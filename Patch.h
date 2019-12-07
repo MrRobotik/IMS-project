@@ -31,7 +31,7 @@ public:
     };
 
 public:
-    static constexpr double AREA = 100; //< Area of discrete patch in hectars.
+    static constexpr double AREA = 1; //< Area of discrete patch in hectars.
 
 protected:
     struct {

@@ -9,11 +9,12 @@ class Simulation
 {
 public:
     /**
+     * @param deforest_limit
      * @param rotation_time plantages rotation time after which palms are cut down and replanted
      * @param wood_waste estimated percentage of wood that is used for energy,
      * paper or left to rot within first 15 years and thus its carbon is released back to atmosphere
      */
-    Simulation(int rotation_time, double wood_waste);
+    Simulation(size_t deforest_limit, int rotation_time, double wood_waste);
 
     /**
      * Run the simulation.
@@ -21,17 +22,19 @@ public:
      */
     void run(size_t duration);
 
-private:
     /**
-     * Proceed timer for each processable wood sample
-     * and efficiently remove those which timer decreased to zero.
+     * Get statistics.
      */
-    void pw_timer_next();
+    void stats();
 
 private:
     /// Exponential distribution of life expectancy of the extracted wood.
     std::exponential_distribution<double> wle_distr;
 
+    /// Maximum deforested area.
+    const size_t DEFOREST_LIMIT;
+
+private:
     /// Accumulator for forest transformation emissions.
     double ft_emissions;
 
@@ -47,6 +50,13 @@ private:
 
     /// AG processable wood biomass from deforestation.
     std::vector<Patch::ProcessableWood> proc_wood;
+
+private:
+    /**
+     * Proceed timer for each processable wood sample
+     * and efficiently remove those which timer decreased to zero.
+     */
+    void pw_timer_next();
 };
 
 #endif // SIMULATION_H

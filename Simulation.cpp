@@ -1,9 +1,12 @@
 ﻿#include "Simulation.h"
 #include <assert.h>
+#include <iostream>
 
 
-Simulation::Simulation(int rotation_time, double wood_waste) :
-    ft_emissions(0.), pww_emissions(0.)
+Simulation::Simulation(size_t deforest_limit, int rotation_time, double wood_waste) :
+    DEFOREST_LIMIT(deforest_limit),
+    ft_emissions(0.),
+    pww_emissions(0.)
 {
     assert(rotation_time >= 0 && rotation_time <= 25);
     assert(wood_waste >= 0.0 && wood_waste <= 1.0);
@@ -22,6 +25,7 @@ Simulation::Simulation(int rotation_time, double wood_waste) :
 void Simulation::run(size_t duration)
 {
     auto &rg = RandomGenerator::get();
+    size_t total_deforested_area = 0;
 
     for (size_t t = 0; t < duration; t++)
     {
@@ -33,8 +37,13 @@ void Simulation::run(size_t duration)
         // Simulate next year for the processable wood biomass.
         pw_timer_next();
 
+        // Deforestation limit has been reached.
+        if (total_deforested_area >= DEFOREST_LIMIT)
+            continue;
+
         // FIXME: randomize DEFORESTED AREA per year
-        size_t deforested_area = 10;
+        size_t deforested_area = 1000;
+        total_deforested_area += deforested_area;
 
         for (size_t i = 0; i < deforested_area; i++)
         {
@@ -70,6 +79,22 @@ void Simulation::run(size_t duration)
             }
         }
     }
+}
+
+
+void Simulation::stats()
+{
+    std::cout << "FT emissions:\t" << ft_emissions << " Mg C\n";
+    std::cout << "PWW emissions:\t" << pww_emissions << " Mg C\n";
+
+    double total_harvest = 0., total_nep = 0.;
+    for (auto &pl : plantations) {
+        total_harvest += pl.get_harvest();
+        total_nep += pl.get_nep();
+    }
+
+    std::cout << "Total NEP:\t\t" << total_nep << " Mg C\n";
+    std::cout << "Total harvest:\t" << total_harvest << " Mg C\n";
 }
 
 
