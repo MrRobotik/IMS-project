@@ -22,8 +22,21 @@ public:
     void run(size_t duration);
 
 private:
-    /// Lambda for exponential distribution of life expectancy of the extracted wood.
-    double WLE;
+    /**
+     * Proceed timer for each processable wood sample
+     * and efficiently remove those which timer decreased to zero.
+     */
+    void pw_timer_next();
+
+private:
+    /// Exponential distribution of life expectancy of the extracted wood.
+    std::exponential_distribution<double> wle_distr;
+
+    /// Accumulator for forest transformation emissions.
+    double ft_emissions;
+
+    /// Accumulator for processable wood waste emissions.
+    double pww_emissions;
 
 private:
     /// Waiting for enough deforested area.
@@ -32,8 +45,8 @@ private:
     /// Already working plantations.
     std::vector<Plantation> plantations;
 
-    /// Above ground wood biomass extracted from deforestation.
-    std::vector<Patch::ExtractedWood> wood;
+    /// AG processable wood biomass from deforestation.
+    std::vector<Patch::ProcessableWood> proc_wood;
 };
 
 #endif // SIMULATION_H

@@ -15,9 +15,9 @@ public:
      * and simulate primary production and fruit harvest.
      *
      * @param age of the palms after time step
-     * @return NPP yield from the harvest
+     * @return relation (NEP, NPP yield from the harvest)
      */
-    double proceed(int age);
+    std::pair<double, double> proceed(int age);
 
 private:
     /// Net Primary Product.

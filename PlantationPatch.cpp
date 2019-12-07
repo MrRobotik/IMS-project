@@ -15,7 +15,8 @@ PlantationPatch::PlantationPatch() : Patch()
 }
 
 
-double PlantationPatch::proceed(int age)
+std::pair<double, double>
+PlantationPatch::proceed(int age)
 {
     assert(age > 0 && age <= 25); // No data available.
 
@@ -54,5 +55,5 @@ double PlantationPatch::proceed(int age)
     carbon_stocks.bg_biomass   += 0.17539863*nep;
     carbon_stocks.dead_biomass += 0.07061503*nep;
 
-    return npp_yield;
+    return {nep, npp_yield};
 }

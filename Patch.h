@@ -25,7 +25,7 @@ public:
     double get_soc();
 
 public:
-    struct ExtractedWood {
+    struct ProcessableWood {
         float biomass;       //< Carbon stocks.
         int life_expectancy; //< After this time, wood will destructed.
     };

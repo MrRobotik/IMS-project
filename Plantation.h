@@ -19,7 +19,7 @@ public:
     /**
      * Add new patch of transformed rainforest.
      */
-    void add_patch(PlantationPatch &&patch);
+    void add_patch(const PlantationPatch &patch);
 
     /**
      * Tell if plantation is ready to start.
@@ -39,11 +39,12 @@ private:
     std::vector<PlantationPatch> patches;
 
     int age;
+    double total_nep;
     double total_harvest;
 };
 
 
-inline void Plantation::add_patch(PlantationPatch &&patch)
+inline void Plantation::add_patch(const PlantationPatch &patch)
 { patches.push_back(patch); }
 
 
