@@ -40,7 +40,7 @@ Simulation::Simulation(size_t deforest_per_year,
 
 void Simulation::set_output(const char *file)
 {
-    output.open(file, std::ios_base::out);
+    if (file) output.open(file, std::ios_base::out);
 }
 
 

@@ -7,7 +7,7 @@
 
 #define HELP \
 "Simulation of rainforest tranformation to oil palm plantations.\n" \
-"Usage: ims-simul -f <config-file> -d <duration-in-years> -o <CSV-output-file>\n\n" \
+"Usage: ims-simul -f <config-file> -d <duration-in-years> [-o <CSV-output-file>]\n\n" \
 "Order of params in the config-file:\n" \
 "1. deforest-per-year\n" \
 "2. deforest-limit\n" \
@@ -17,7 +17,7 @@
 "6. rainforest-wood-waste\n" \
 "7. palm-wood-waste\n\n" \
 "Output CSV format:\n" \
-"[deforestation emissions], [woodwaste emissions], [total harvest], [total NEP], [total C stocks]"
+"[deforest. em.], [woodwaste em.], [harvest], [NEP], [C stocks]"
 
 #define is_probability(p) (p >= 0. && p <= 1.)
 
