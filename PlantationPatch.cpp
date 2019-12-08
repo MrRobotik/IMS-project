@@ -9,6 +9,10 @@ PlantationPatch::NPP_yield_distr(NPP_yield_mean, NPP_yield_sigma),
 PlantationPatch::SOC_distr(SOC_mean, SOC_sigma);
 
 
+std::exponential_distribution<double>
+PlantationPatch::wle_distr;
+
+
 PlantationPatch::PlantationPatch() : Patch()
 {
     carbon_stocks.soc = SOC_distr(RandomGenerator::get());

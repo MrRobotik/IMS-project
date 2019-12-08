@@ -8,15 +8,21 @@ typedef std::minstd_rand RG_impl;
 class RandomGenerator : public RG_impl
 {
 public:
-    static RandomGenerator &get()
-    { return instance; }
+    /**
+     * Get the instance.
+     */
+    static RandomGenerator &get();
 
 private:
     RandomGenerator();
-    ~RandomGenerator() = default;
 
 private:
     static RandomGenerator instance;
 };
+
+
+inline RandomGenerator &RandomGenerator::get()
+{ return instance; }
+
 
 #endif // RANDOMGENERATOR_H

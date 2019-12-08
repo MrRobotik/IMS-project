@@ -10,7 +10,7 @@ set(
  RainforestPatch.cpp
  PlantationPatch.cpp
  Plantation.cpp
- ProcessableWood.cpp
+ WoodStorage.cpp
 )
 
 project(ims-simul)

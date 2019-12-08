@@ -8,6 +8,10 @@ RainforestPatch::D_distr(D_mean, D_mean),
 RainforestPatch::SOC_distr(SOC_mean, SOC_sigma);
 
 
+std::exponential_distribution<double>
+RainforestPatch::wle_distr;
+
+
 RainforestPatch::RainforestPatch() : Patch()
 {
     // Generate carbon stocks according to measured distributions.

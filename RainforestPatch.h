@@ -11,6 +11,10 @@ public:
     RainforestPatch();
 
 public:
+    /// Exponential distribution of life expectancy of the processible wood.
+    static std::exponential_distribution<double> wle_distr;
+
+public:
     /// Approximately 1/3 of AG biomass are branches and leaves.
     static constexpr double LITTER_RATIO = 0.333333333;
 

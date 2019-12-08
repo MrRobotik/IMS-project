@@ -13,9 +13,15 @@ Simulation::Simulation(size_t deforest_limit, unsigned rotation_time,
 
     Plantation::ROTATION_TIME = rotation_time;
 
-    // Distribution function equals wood_waste at t=10years.
-    double lambda = -log(1. - rainforest_wood_waste)/10.;
-    wle_distr = std::exponential_distribution<double>(lambda);
+    {
+        double lambda;
+
+        lambda = -log(1. - rainforest_wood_waste)/10.;
+        RainforestPatch::wle_distr = std::exponential_distribution<double>(lambda);
+
+        lambda = -log(1. - palm_wood_waste)/10.;
+        PlantationPatch::wle_distr = std::exponential_distribution<double>(lambda);
+    }
 
     // FIXME: randomize PLANTATION size from mean and stddev
     next_plantation = Plantation(50);
@@ -29,7 +35,7 @@ void Simulation::run(size_t duration)
     }
 
     std::cout << "FT emissions:\t" << ft_emissions << " Mg C\n";
-    std::cout << "PWW emissions:\t" << pww_emissions << " Mg C\n";
+    std::cout << "PWW emissions:\t" << WoodStorage::get().get_emissions() << " Mg C\n";
 
     double total_harvest = 0.;
     double total_nep = 0.;
@@ -57,6 +63,7 @@ void Simulation::run(size_t duration)
 inline void Simulation::nextstep()
 {
     auto &rg = RandomGenerator::get();
+    auto &wood_storage = WoodStorage::get();
 
     // Simulate each plantation.
     for (auto &pl : plantations) {
@@ -78,17 +85,11 @@ inline void Simulation::nextstep()
         // Generate rainforest patch to be transformed.
         RainforestPatch forest_patch;
 
-        // Simulate life of processable wood after being cut.
-        ProcessableWood::unit wood;
+        // Simulate life of processible rainforest wood after being cut.
+        WoodStorage::unit wood;
         wood.biomass = forest_patch.get_wood(RainforestPatch::LITTER_RATIO);
-        wood.life_expectancy = int(std::round(wle_distr(rg)));
-
-        if (wood.life_expectancy == 0) {
-            pww_emissions += wood.biomass;
-        }
-        else {
-            wood_storage.add(wood);
-        }
+        wood.life_expectancy = int(std::round(RainforestPatch::wle_distr(rg)));
+        wood_storage.add(wood);
 
         // Generate new plantation patch.
         PlantationPatch plantation_patch;

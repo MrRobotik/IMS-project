@@ -3,7 +3,7 @@
 
 #include "Plantation.h"
 #include "RainforestPatch.h"
-#include "ProcessableWood.h"
+#include "WoodStorage.h"
 
 
 class Simulation
@@ -29,9 +29,6 @@ public:
     void run(size_t duration);
 
 private:
-    /// Exponential distribution of life expectancy of the processable wood.
-    std::exponential_distribution<double> wle_distr;
-
     /// Maximum deforested area.
     const size_t DEFOREST_LIMIT;
 
@@ -42,9 +39,6 @@ private:
     /// Accumulator for forest transformation emissions.
     double ft_emissions = 0.;
 
-    /// Accumulator for processable wood waste emissions.
-    double pww_emissions = 0.;
-
     /// Total area of deforested rainforest.
     size_t total_deforested_area = 0;
 
@@ -54,9 +48,6 @@ private:
 
     /// Active plantations.
     std::vector<Plantation> plantations;
-
-    /// AG processable wood biomass.
-    ProcessableWood wood_storage;
 
 private:
     /**

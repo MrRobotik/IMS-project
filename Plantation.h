@@ -55,9 +55,9 @@ private:
     size_t size;
     std::vector<PlantationPatch> patches;
 
-    int age;
-    double total_nep;
-    double total_harvest;
+    int age = 0;
+    double total_nep = 0.;
+    double total_harvest = 0.;
 };
 
 

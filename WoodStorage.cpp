@@ -1,11 +1,12 @@
-﻿#include "ProcessableWood.h"
+﻿#include "WoodStorage.h"
 
 
-double ProcessableWood::nextstep()
+WoodStorage WoodStorage::instance;
+
+
+void WoodStorage::nextstep()
 {
-    double emissions = 0.0;
     size_t release_cnt = 0;
-
     for (auto it = storage.begin(); it != storage.end(); it++)
     {
         if (-- it->life_expectancy == 0)
@@ -20,5 +21,4 @@ double ProcessableWood::nextstep()
     }
     // Strip the released wood units.
     storage.resize(storage.size() - release_cnt);
-    return emissions;
 }
