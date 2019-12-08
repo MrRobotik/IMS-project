@@ -4,13 +4,13 @@ set(CMAKE_C_FLAGS "-Wall")
 
 set(
  SOURCES
- main.cpp
- Simulation.cpp
- RandomGenerator.cpp
- RainforestPatch.cpp
- PlantationPatch.cpp
- Plantation.cpp
- WoodStorage.cpp
+ src/main.cpp
+ src/Simulation.cpp
+ src/RandomGenerator.cpp
+ src/RainforestPatch.cpp
+ src/PlantationPatch.cpp
+ src/Plantation.cpp
+ src/WoodStorage.cpp
 )
 
 project(ims-simul)
