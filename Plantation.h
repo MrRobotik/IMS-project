@@ -51,6 +51,9 @@ public:
     /// Period of the plantation rotation cycle.
     static unsigned ROTATION_TIME;
 
+    /// Number of hectars replanted per year.
+    static size_t REPLANT_PER_YEAR;
+
 private:
     size_t size;
     std::vector<PlantationPatch> patches;

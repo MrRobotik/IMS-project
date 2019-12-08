@@ -23,8 +23,8 @@ public:
     static std::exponential_distribution<double> wle_distr;
 
 public:
-    /// Palm leaves.
-    static constexpr double LITTER_RATIO = 0.05;
+    /// Unprocessible biomass.
+    static constexpr double LITTER_RATIO = 0.488095;
 
 private:
     /// Net Primary Product of mature palms.

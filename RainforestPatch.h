@@ -15,8 +15,8 @@ public:
     static std::exponential_distribution<double> wle_distr;
 
 public:
-    /// Approximately 1/3 of AG biomass are branches and leaves.
-    static constexpr double LITTER_RATIO = 0.333333333;
+    /// Unprocessible biomass.
+    static constexpr double LITTER_RATIO = 0.506494;
 
 private:
     /// Above ground living biomass.

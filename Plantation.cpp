@@ -2,7 +2,8 @@
 #include "WoodStorage.h"
 
 
-unsigned Plantation::ROTATION_TIME = 25;
+unsigned Plantation::ROTATION_TIME;
+size_t Plantation::REPLANT_PER_YEAR;
 
 
 Plantation::Plantation(size_t size) :
@@ -21,8 +22,6 @@ Plantation &Plantation::operator=(Plantation &&other)
     age = other.age;
     total_nep = other.total_nep;
     total_harvest = other.total_harvest;
-
-    other.size = other.age = other.total_nep = other.total_harvest = 0;
     return *this;
 }
 
@@ -46,7 +45,7 @@ void Plantation::nextstep()
             // Simulate life of processible palm wood after being cut.
             WoodStorage::unit wood;
             wood.biomass = patch.get_wood(PlantationPatch::LITTER_RATIO);
-            wood.life_expectancy = int(std::round(PlantationPatch::wle_distr(RandomGenerator::get())));
+            wood.life_expectancy = std::round(PlantationPatch::wle_distr(RandomGenerator::get()));
             WoodStorage::get().add(wood);
 
             // Substract the litter.
@@ -56,9 +55,7 @@ void Plantation::nextstep()
             patch.clear_biomass();
         }
 
-        // TODO: calculate replantation time
-        int replant_time = 2;
-
+        int replant_time = std::round(double(size)/REPLANT_PER_YEAR);
         age = 0 - replant_time;
     }
 }
