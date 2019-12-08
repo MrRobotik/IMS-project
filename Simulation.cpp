@@ -3,17 +3,18 @@
 #include <iostream>
 
 
-Simulation::Simulation(size_t deforest_limit, unsigned rotation_time, double wood_waste)
+Simulation::Simulation(size_t deforest_limit, unsigned rotation_time,
+                       double rainforest_wood_waste, double palm_wood_waste)
     :
       DEFOREST_LIMIT(deforest_limit)
 {
     assert(rotation_time <= 25);
-    assert(wood_waste >= 0.0 && wood_waste <= 1.0);
+    assert(rainforest_wood_waste >= 0.0 && rainforest_wood_waste <= 1.0);
 
     Plantation::ROTATION_TIME = rotation_time;
 
-    // Distribution function equals wood_waste at 15 years.
-    double lambda = -log(1. - wood_waste)/15.;
+    // Distribution function equals wood_waste at t=10years.
+    double lambda = -log(1. - rainforest_wood_waste)/10.;
     wle_distr = std::exponential_distribution<double>(lambda);
 
     // FIXME: randomize PLANTATION size from mean and stddev
@@ -26,11 +27,7 @@ void Simulation::run(size_t duration)
     for (; t < duration; t++) {
         this->nextstep();
     }
-}
 
-
-void Simulation::stats()
-{
     std::cout << "FT emissions:\t" << ft_emissions << " Mg C\n";
     std::cout << "PWW emissions:\t" << pww_emissions << " Mg C\n";
 
@@ -61,13 +58,13 @@ inline void Simulation::nextstep()
 {
     auto &rg = RandomGenerator::get();
 
-    // Simulate next year for each plantation.
+    // Simulate each plantation.
     for (auto &pl : plantations) {
         pl.nextstep();
     }
 
-    // Simulate next year for the processable wood biomass.
-    pw_timer_next();
+    // Simulate wood.
+    wood_storage.nextstep();
 
     // Deforestation limit has been reached.
     if (total_deforested_area >= DEFOREST_LIMIT)
@@ -82,7 +79,7 @@ inline void Simulation::nextstep()
         RainforestPatch forest_patch;
 
         // Simulate life of processable wood after being cut.
-        Patch::ProcessableWood wood;
+        ProcessableWood::unit wood;
         wood.biomass = forest_patch.get_wood(RainforestPatch::LITTER_RATIO);
         wood.life_expectancy = int(std::round(wle_distr(rg)));
 
@@ -90,7 +87,7 @@ inline void Simulation::nextstep()
             pww_emissions += wood.biomass;
         }
         else {
-            wood_storage.push_back(wood);
+            wood_storage.add(wood);
         }
 
         // Generate new plantation patch.
@@ -109,24 +106,4 @@ inline void Simulation::nextstep()
             next_plantation = Plantation(50);
         }
     }
-}
-
-
-inline void Simulation::pw_timer_next()
-{
-    size_t release_cnt = 0;
-    for (auto it = wood_storage.begin(); it != wood_storage.end(); it++)
-    {
-        if (-- it->life_expectancy == 0)
-        {
-            // Release carbon back to the atmosphere.
-            pww_emissions += it->biomass;
-
-            // Just swap with the back so we don't have to copy extra items.
-            std::swap(*it, wood_storage.back());
-            release_cnt++;
-        }
-    }
-    // Shrink.
-    wood_storage.resize(wood_storage.size() - release_cnt);
 }

@@ -3,29 +3,30 @@
 
 #include "Plantation.h"
 #include "RainforestPatch.h"
+#include "ProcessableWood.h"
 
 
 class Simulation
 {
 public:
     /**
-     * @param deforest_limit
-     * @param rotation_time plantages rotation time after which palms are cut down and replanted
-     * @param wood_waste estimated percentage of wood that is used for energy,
-     * paper or left to rot within first 15 years and thus its carbon is released back to atmosphere
+     * Constructor.
+     * Parameters *_wood_waste are estimated percentage of wood that is used for energy (charcoal),
+     * paper, left to rot or burn within first 10 years and thus its carbon is released back into atmosphere.
+     *
+     * @param deforest_limit maximum area to deforest
+     * @param rotation_time plantations rotation time after which palms are cut down and replanted
+     * @param rainforest_wood_waste waste of wood from rainforest
+     * @param palm_wood_waste waste of wood from palm plantation
      */
-    Simulation(size_t deforest_limit, unsigned rotation_time, double wood_waste);
+    Simulation(size_t deforest_limit, unsigned rotation_time,
+               double rainforest_wood_waste, double palm_wood_waste);
 
     /**
      * Run the simulation.
      * @param duration simulation time in years
      */
     void run(size_t duration);
-
-    /**
-     * Get statistics.
-     */
-    void stats();
 
 private:
     /// Exponential distribution of life expectancy of the processable wood.
@@ -51,23 +52,17 @@ private:
     /// Waiting for enough deforested area.
     Plantation next_plantation;
 
-    /// Already working plantations.
+    /// Active plantations.
     std::vector<Plantation> plantations;
 
-    /// AG processable wood biomass from deforestation.
-    std::vector<Patch::ProcessableWood> wood_storage;
+    /// AG processable wood biomass.
+    ProcessableWood wood_storage;
 
 private:
     /**
      * Simulate the next simulation time step (year).
      */
     void nextstep();
-
-    /**
-     * Proceed timer for each processable wood in wood_storage
-     * and efficiently release those which timer decreased to zero.
-     */
-    void pw_timer_next();
 };
 
 #endif // SIMULATION_H

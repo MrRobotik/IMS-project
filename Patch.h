@@ -30,13 +30,8 @@ public:
     double get_soc();
 
 public:
-    struct ProcessableWood {
-        float biomass;       //< Carbon stocks.
-        int life_expectancy; //< After this time, wood will destructed.
-    };
-
-public:
-    static constexpr double AREA = 1; //< Area of discrete patch in hectars.
+    /// Area of discrete patch in hectars.
+    static constexpr double AREA = 1;
 
 protected:
     struct {
