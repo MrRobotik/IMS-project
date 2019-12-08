@@ -40,7 +40,10 @@ Simulation::Simulation(size_t deforest_per_year,
 
 void Simulation::set_output(const char *file)
 {
-    if (file) output.open(file, std::ios_base::out);
+    if (file) {
+        output.open(file, std::ios_base::out);
+        output << "year, deforest_emission, woodwaste_emission, palms_harvest, palms_NEP, palms_C_stocks\n";
+    }
 }
 
 
@@ -129,6 +132,7 @@ inline void Simulation::print_csvline()
         }
     }
 
+    output << (t+1) << ',';
     output << ft_emissions << ',';
     output << WoodStorage::get().get_emissions() << ',';
     output << total_harvest << ',';

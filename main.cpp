@@ -15,9 +15,7 @@
 "4. rotation-time\n" \
 "5. replant-per-year\n" \
 "6. rainforest-wood-waste\n" \
-"7. palm-wood-waste\n\n" \
-"Output CSV format:\n" \
-"[deforest. em.], [woodwaste em.], [harvest], [NEP], [C stocks]"
+"7. palm-wood-waste"
 
 #define is_probability(p) (p >= 0. && p <= 1.)
 
