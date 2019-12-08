@@ -27,9 +27,9 @@ public:
     bool is_ready();
 
     /**
-     * Call proceed for each patch and accumulate the harvest.
+     * Call nextstep() for each patch and accumulate the harvest.
      */
-    void proceed();
+    void nextstep();
 
 public:
     /**
@@ -43,12 +43,13 @@ public:
     double get_nep();
 
     /**
-     * Get patches vector.
+     * Get patches vector reference.
      */
     const std::vector<PlantationPatch> &get_patches();
 
 public:
-    static int ROTATION_TIME; //< Period of the plantation rotation cycle.
+    /// Period of the plantation rotation cycle.
+    static unsigned ROTATION_TIME;
 
 private:
     size_t size;

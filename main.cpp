@@ -5,7 +5,7 @@
 int main(int argc, const char **argv)
 {
     Simulation simulation(10000, 25, 0.9);
-    simulation.run(50);
+    simulation.run(100);
     simulation.stats();
 
     return 0;

@@ -16,7 +16,7 @@ PlantationPatch::PlantationPatch() : Patch()
 
 
 std::pair<double, double>
-PlantationPatch::proceed(int age)
+PlantationPatch::nextstep(int age)
 {
     assert(age > 0 && age <= 25); // No data available.
 

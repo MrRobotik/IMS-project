@@ -1,7 +1,7 @@
 ﻿#include "Plantation.h"
 
 
-int Plantation::ROTATION_TIME = 25;
+unsigned Plantation::ROTATION_TIME = 25;
 
 
 Plantation::Plantation(size_t size) :
@@ -29,17 +29,20 @@ Plantation &Plantation::operator=(Plantation &&other)
 }
 
 
-void Plantation::proceed()
+void Plantation::nextstep()
 {
     age++;
     for (auto &p : patches) {
-        auto res = p.proceed(age);
+        auto res = p.nextstep(age);
         total_nep += res.first;
         total_harvest += res.second;
     }
 
     if (age == ROTATION_TIME) {
         age = 0;
+        for (auto &patch : patches) {
+            patch.clear_biomass();
+        }
         // TODO: cut down and replant trees
     }
 }

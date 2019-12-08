@@ -15,11 +15,11 @@ public:
     static constexpr double LITTER_RATIO = 0.333333333;
 
 private:
-    /// Above ground biomass.
+    /// Above ground living biomass.
     static constexpr double
     AG_mean = 159.7, AG_sigma = 11.2;
 
-    /// Below ground biomass.
+    /// Below ground living biomass.
     static constexpr double
     BG_mean = 33.8, BG_sigma = 1.4;
 

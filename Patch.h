@@ -10,6 +10,11 @@ public:
     Patch();
 
     /**
+     * Clear the biomass, SOC is preserved.
+     */
+    void clear_biomass();
+
+    /**
      * Return carbon in processable biomass.
      */
     double get_wood(double litter_ratio);
@@ -48,14 +53,22 @@ inline Patch::Patch()
 { carbon_stocks = {}; }
 
 
+inline void Patch::clear_biomass()
+{
+    carbon_stocks.ag_biomass   = 0.f;
+    carbon_stocks.bg_biomass   = 0.f;
+    carbon_stocks.dead_biomass = 0.f;
+}
+
+
 inline double Patch::get_wood(double litter_ratio)
-{ return double(carbon_stocks.ag_biomass) * litter_ratio; }
+{ return double(carbon_stocks.ag_biomass) * (1.0 - litter_ratio); }
 
 
 inline double Patch::get_litter(double litter_ratio)
 {
     return
-    double(carbon_stocks.ag_biomass) * (1.0 - litter_ratio)
+    double(carbon_stocks.ag_biomass) * litter_ratio
     + carbon_stocks.bg_biomass
     + carbon_stocks.dead_biomass;
 }

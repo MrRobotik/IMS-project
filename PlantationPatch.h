@@ -11,16 +11,15 @@ public:
     PlantationPatch();
 
     /**
-     * Proceed to the next time step (year)
-     * and simulate primary production and fruit harvest.
+     * Simulate primary production and fruit harvest in the next year.
      *
      * @param age of the palms after time step
      * @return relation (NEP, NPP yield from the harvest)
      */
-    std::pair<double, double> proceed(int age);
+    std::pair<double, double> nextstep(int age);
 
 private:
-    /// Net Primary Product.
+    /// Net Primary Product of mature palms.
     static constexpr double
     NPP_mean = 17.1, NPP_sigma = 0.9;
 
@@ -28,7 +27,7 @@ private:
     static constexpr double
     Rh_mean = 4.2, Rh_sigma = 0.3;
 
-    /// Net Primary Product maximum fruit harvest yield.
+    /// Net Primary Product maximum yield via fruit harvest.
     static constexpr double
     NPP_yield_mean = 10.0, NPP_yield_sigma = 0.8;
 
