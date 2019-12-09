@@ -15,7 +15,7 @@ PlantationPatch::wle_distr;
 
 PlantationPatch::PlantationPatch() : Patch()
 {
-    carbon_stocks.soc = SOC_distr(RandomGenerator::get());
+    carbon_stocks.soc = SOC_distr(RandomGenerator::get())*AREA;
 }
 
 

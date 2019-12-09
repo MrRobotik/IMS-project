@@ -21,15 +21,16 @@ public:
      * @param deforest_limit maximum area to deforest
      * @param plantation_size required deforested area for each plantation unit
      * @param rotation_time time after which palms are cut down and replanted
-     * @param replant_time time required to replant plantation unit.
+     * @param replant_limit_per_year limit for replanted area per year
      * @param rainforest_wood_waste waste of wood from rainforest
      * @param palm_wood_waste waste of wood from palm plantation
      */
-    Simulation(size_t deforest_per_year,
+    Simulation(double discrete_area,
+               size_t deforest_per_year,
                size_t deforest_limit,
                size_t plantation_size,
                unsigned rotation_time,
-               unsigned replant_time,
+               size_t replant_limit_per_year,
                double rainforest_wood_waste,
                double palm_wood_waste);
 
@@ -54,6 +55,9 @@ private:
 
     /// Required deforested area for each plantation unit.
     const size_t PLANTATION_SIZE;
+
+    /// Limit for replanted area per year
+    const size_t REPLANT_LIMIT;
 
 private:
     /// Curent time position of the simulation (years).

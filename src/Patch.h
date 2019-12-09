@@ -15,9 +15,9 @@ public:
     void clear_biomass();
 
     /**
-     * Return carbon in all biomass.
+     * Return all carbon stocks.
      */
-    double get_biomass();
+    double get_c_stocks();
 
     /**
      * Return carbon in processable biomass.
@@ -61,8 +61,8 @@ inline void Patch::clear_biomass()
 }
 
 
-inline double Patch::get_biomass()
-{ return carbon_stocks.ag_biomass + carbon_stocks.bg_biomass + carbon_stocks.dead_biomass; }
+inline double Patch::get_c_stocks()
+{ return carbon_stocks.ag_biomass + carbon_stocks.bg_biomass + carbon_stocks.dead_biomass + carbon_stocks.soc; }
 
 
 inline double Patch::get_wood(double litter_ratio)

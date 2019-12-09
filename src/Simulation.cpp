@@ -3,27 +3,34 @@
 #include <iostream>
 
 
-Simulation::Simulation(size_t deforest_per_year,
+Simulation::Simulation(double discrete_area,
+                       size_t deforest_per_year,
                        size_t deforest_limit,
                        size_t plantation_size,
                        unsigned rotation_time,
-                       unsigned replant_time,
+                       size_t replant_limit_per_year,
                        double rainforest_wood_waste,
                        double palm_wood_waste)
     :
       DEFOREST_PER_YEAR(deforest_per_year),
       DEFOREST_LIMIT(deforest_limit),
-      PLANTATION_SIZE(plantation_size)
+      PLANTATION_SIZE(plantation_size),
+      REPLANT_LIMIT(replant_limit_per_year)
 {
+    if (discrete_area == 0.)
+        throw std::invalid_argument(nullptr);
+
     if (rotation_time == 0 || rotation_time > 25)
         throw std::invalid_argument(nullptr);
 
     if (! is_probability(rainforest_wood_waste) || ! is_probability(palm_wood_waste))
         throw std::invalid_argument(nullptr);
 
+    // Base settings.
+    Patch::AREA = discrete_area;
+
     // Plantations settings.
     Plantation::ROTATION_TIME = rotation_time;
-    Plantation::REPLANT_TIME = replant_time;
 
     // Prepare wood waste distributions.
     {
@@ -56,7 +63,6 @@ void Simulation::run(size_t duration)
         this->nextstep();
         this->print_csvline();
     }
-
     this->print_stats();
 }
 
@@ -65,6 +71,9 @@ inline void Simulation::nextstep()
 {
     auto &rg = RandomGenerator::get();
     auto &wood_storage = WoodStorage::get();
+
+    // Reset the reservoir.
+    Plantation::replant_area_reservoir = REPLANT_LIMIT;
 
     // Simulate each plantation.
     for (auto &pl : plantations) {
@@ -81,7 +90,7 @@ inline void Simulation::nextstep()
     size_t deforested_area = DEFOREST_PER_YEAR;
     total_deforested_area += deforested_area;
 
-    // Clip.
+    // Clip the area.
     if (total_deforested_area > DEFOREST_LIMIT)
         total_deforested_area = DEFOREST_LIMIT;
 
@@ -131,7 +140,7 @@ inline void Simulation::print_csvline()
         total_nep += pl.get_nep();
 
         for (auto patch : pl.get_patches()) {
-            c_stocks += patch.get_biomass();
+            c_stocks += patch.get_c_stocks();
         }
     }
 
@@ -162,7 +171,7 @@ inline void Simulation::print_stats()
         patch_cnt += pl.get_patches().size();
 
         for (auto patch : pl.get_patches()) {
-            c_stocks += patch.get_biomass();
+            c_stocks += patch.get_c_stocks();
         }
     }
 

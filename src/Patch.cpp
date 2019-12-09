@@ -1,3 +1,3 @@
 ﻿#include "Patch.h"
 
-double Patch::AREA = 100.;
+double Patch::AREA = 1.;

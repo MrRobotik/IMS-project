@@ -51,14 +51,17 @@ public:
     /// Period of the plantation rotation cycle.
     static unsigned ROTATION_TIME;
 
-    /// Time required to replant plantation unit.
-    static unsigned REPLANT_TIME;
+    /// Total area which can be replanted in the current year.
+    static unsigned replant_area_reservoir;
 
 private:
     size_t size;
     std::vector<PlantationPatch> patches;
 
-    int age = 0;
+    // Next patch index that needs to be replanted.
+    unsigned int i;
+
+    int age = 0;    
     double total_nep = 0.;
     double total_harvest = 0.;
 };
