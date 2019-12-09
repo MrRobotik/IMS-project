@@ -26,8 +26,8 @@ PlantationPatch::nextstep(int age)
 
     auto &rg = RandomGenerator::get(); // Random generator.
 
-    double npp = NPP_distr(rg);
-    double rh  = Rh_distr(rg);
+    double npp = NPP_distr(rg)*AREA;
+    double rh  = Rh_distr(rg)*AREA;
 
     // Scaling function of age for NPP of palm trees.
     npp *= 1.3412545110882410e+000
@@ -41,7 +41,7 @@ PlantationPatch::nextstep(int age)
     if (age >= 3)
     {
         // Harvest the fruits.
-        npp_yield = NPP_yield_distr(rg);
+        npp_yield = NPP_yield_distr(rg)*AREA;
 
         if (age <= 8) {
             npp_yield *= 0.2*age - 0.6; // Yield increasing.

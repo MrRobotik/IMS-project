@@ -16,8 +16,8 @@ RainforestPatch::RainforestPatch() : Patch()
 {
     // Generate carbon stocks according to measured distributions.
     auto &rg = RandomGenerator::get();
-    carbon_stocks.ag_biomass = AG_distr(rg);
-    carbon_stocks.bg_biomass = BG_distr(rg);
-    carbon_stocks.dead_biomass = D_distr(rg);
-    carbon_stocks.soc = SOC_distr(rg);
+    carbon_stocks.ag_biomass = AG_distr(rg)*AREA;
+    carbon_stocks.bg_biomass = BG_distr(rg)*AREA;
+    carbon_stocks.dead_biomass = D_distr(rg)*AREA;
+    carbon_stocks.soc = SOC_distr(rg)*AREA;
 }

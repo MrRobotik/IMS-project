@@ -2,6 +2,7 @@
 #define SIMULATION_H
 
 #include <fstream>
+#include <stdexcept>
 
 #include "Plantation.h"
 #include "RainforestPatch.h"
@@ -20,7 +21,7 @@ public:
      * @param deforest_limit maximum area to deforest
      * @param plantation_size required deforested area for each plantation unit
      * @param rotation_time time after which palms are cut down and replanted
-     * @param replant_per_year maximum replanted plantation area per year
+     * @param replant_time time required to replant plantation unit.
      * @param rainforest_wood_waste waste of wood from rainforest
      * @param palm_wood_waste waste of wood from palm plantation
      */
@@ -28,7 +29,7 @@ public:
                size_t deforest_limit,
                size_t plantation_size,
                unsigned rotation_time,
-               size_t replant_per_year,
+               unsigned replant_time,
                double rainforest_wood_waste,
                double palm_wood_waste);
 
@@ -48,7 +49,7 @@ private:
     /// Maximum deforested area.
     const size_t DEFOREST_LIMIT;
 
-    /// Number of deforested hectars per year.
+    /// Number of deforested patches per year.
     const size_t DEFOREST_PER_YEAR;
 
     /// Required deforested area for each plantation unit.
@@ -87,6 +88,12 @@ private:
      * Print total statistics of the simulation to stdout.
      */
     void print_stats();
+
+private:
+    /**
+     * Check if value is in interval <0,1>.
+     */
+    bool is_probability(double p);
 
 private:
     std::fstream output;

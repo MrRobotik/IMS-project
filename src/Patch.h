@@ -15,6 +15,11 @@ public:
     void clear_biomass();
 
     /**
+     * Return carbon in all biomass.
+     */
+    double get_biomass();
+
+    /**
      * Return carbon in processable biomass.
      */
     double get_wood(double litter_ratio);
@@ -31,7 +36,7 @@ public:
 
 public:
     /// Area of discrete patch in hectars.
-    static constexpr double AREA = 1;
+    static double AREA;
 
 protected:
     struct {
@@ -56,21 +61,20 @@ inline void Patch::clear_biomass()
 }
 
 
+inline double Patch::get_biomass()
+{ return carbon_stocks.ag_biomass + carbon_stocks.bg_biomass + carbon_stocks.dead_biomass; }
+
+
 inline double Patch::get_wood(double litter_ratio)
-{ return double(carbon_stocks.ag_biomass) * (1.0 - litter_ratio); }
+{ return carbon_stocks.ag_biomass*(1.0 - litter_ratio); }
 
 
 inline double Patch::get_litter(double litter_ratio)
-{
-    return
-    double(carbon_stocks.ag_biomass) * litter_ratio
-    + carbon_stocks.bg_biomass
-    + carbon_stocks.dead_biomass;
-}
+{ return carbon_stocks.ag_biomass*litter_ratio + carbon_stocks.bg_biomass + carbon_stocks.dead_biomass; }
 
 
 inline double Patch::get_soc()
-{ return double(carbon_stocks.soc); }
+{ return carbon_stocks.soc; }
 
 
 #endif // PATCH_H

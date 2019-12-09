@@ -51,8 +51,8 @@ public:
     /// Period of the plantation rotation cycle.
     static unsigned ROTATION_TIME;
 
-    /// Number of hectars replanted per year.
-    static size_t REPLANT_PER_YEAR;
+    /// Time required to replant plantation unit.
+    static unsigned REPLANT_TIME;
 
 private:
     size_t size;

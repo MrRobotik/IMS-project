@@ -9,15 +9,13 @@
 "Simulation of rainforest tranformation to oil palm plantations.\n" \
 "Usage: ims-simul -f <config-file> -d <duration-in-years> [-o <CSV-output-file>]\n\n" \
 "Order of params in the config-file:\n" \
-"1. deforest-per-year\n" \
-"2. deforest-limit\n" \
-"3. plantation-size\n" \
-"4. rotation-time\n" \
-"5. replant-per-year\n" \
-"6. rainforest-wood-waste\n" \
-"7. palm-wood-waste"
-
-#define is_probability(p) (p >= 0. && p <= 1.)
+"1. deforested area per year\n" \
+"2. deforestation limit\n" \
+"3. palm plant. unit size\n" \
+"4. palm plant. rotation cycle\n" \
+"5. palm plant. replanting duration\n" \
+"6. wood waste from rainforest\n" \
+"7. wood waste from palm plant."
 
 
 int main(int argc, char **argv)
@@ -75,26 +73,26 @@ int main(int argc, char **argv)
     file >> palm_wood_waste;
     file.close();
 
-    // Check if params are valid.
-    if (! deforest_per_year || ! deforest_limit || ! plantation_size || ! rotation_time || ! replant_per_year ||
-        ! is_probability(rainforest_wood_waste) || ! is_probability(palm_wood_waste))
-    {
+    try {
+        // Initialize simulation.
+        Simulation simulation(deforest_per_year,
+                              deforest_limit,
+                              plantation_size,
+                              rotation_time,
+                              replant_per_year,
+                              rainforest_wood_waste,
+                              palm_wood_waste);
+        // Set CSV output.
+        simulation.set_output(output);
+
+        // Run the simulation.
+        simulation.run(duration);
+
+    }
+    catch (const std::invalid_argument &) {
         std::cerr << "Invalid config-file" << std::endl;
         return 1;
     }
 
-    // Initialize simulation.
-    Simulation simulation(deforest_per_year,
-                          deforest_limit,
-                          plantation_size,
-                          rotation_time,
-                          replant_per_year,
-                          rainforest_wood_waste,
-                          palm_wood_waste);
-    // Set CSV output.
-    simulation.set_output(output);
-
-    // Run the simulation.
-    simulation.run(duration);
     return 0;
 }

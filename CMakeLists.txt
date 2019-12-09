@@ -7,6 +7,7 @@ set(
  src/main.cpp
  src/Simulation.cpp
  src/RandomGenerator.cpp
+ src/Patch.cpp
  src/RainforestPatch.cpp
  src/PlantationPatch.cpp
  src/Plantation.cpp

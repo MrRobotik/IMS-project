@@ -7,7 +7,7 @@ Simulation::Simulation(size_t deforest_per_year,
                        size_t deforest_limit,
                        size_t plantation_size,
                        unsigned rotation_time,
-                       size_t replant_per_year,
+                       unsigned replant_time,
                        double rainforest_wood_waste,
                        double palm_wood_waste)
     :
@@ -15,21 +15,24 @@ Simulation::Simulation(size_t deforest_per_year,
       DEFOREST_LIMIT(deforest_limit),
       PLANTATION_SIZE(plantation_size)
 {
-    assert(rotation_time <= 25);
-    assert(rainforest_wood_waste >= 0.0 && rainforest_wood_waste <= 1.0);
+    if (rotation_time == 0 || rotation_time > 25)
+        throw std::invalid_argument(nullptr);
+
+    if (! is_probability(rainforest_wood_waste) || ! is_probability(palm_wood_waste))
+        throw std::invalid_argument(nullptr);
 
     // Plantations settings.
     Plantation::ROTATION_TIME = rotation_time;
-    Plantation::REPLANT_PER_YEAR = replant_per_year;
+    Plantation::REPLANT_TIME = replant_time;
 
     // Prepare wood waste distributions.
     {
         double lambda;
 
-        lambda = -log(1. - rainforest_wood_waste)/10.;
+        lambda = -log(1. - rainforest_wood_waste)/15.;
         RainforestPatch::wle_distr = std::exponential_distribution<double>(lambda);
 
-        lambda = -log(1. - palm_wood_waste)/10.;
+        lambda = -log(1. - palm_wood_waste)/15.;
         PlantationPatch::wle_distr = std::exponential_distribution<double>(lambda);
     }
 
@@ -128,7 +131,7 @@ inline void Simulation::print_csvline()
         total_nep += pl.get_nep();
 
         for (auto patch : pl.get_patches()) {
-            c_stocks += patch.get_wood(0.) + patch.get_litter(0.);
+            c_stocks += patch.get_biomass();
         }
     }
 
@@ -159,7 +162,7 @@ inline void Simulation::print_stats()
         patch_cnt += pl.get_patches().size();
 
         for (auto patch : pl.get_patches()) {
-            c_stocks += patch.get_wood(0.) + patch.get_litter(0.);
+            c_stocks += patch.get_biomass();
         }
     }
 
@@ -167,5 +170,9 @@ inline void Simulation::print_stats()
     std::cout << "total NEP:\t\t" << total_nep << '\n';
     std::cout << "total harvest:\t\t" << total_harvest << '\n';
     std::cout << "total C-stocks:\t\t" << c_stocks << '\n';
-    std::cout << "C-stocks per patch:\t" << c_stocks/double(patch_cnt) << '\n';
+    std::cout << "C-stocks per hectar:\t" << c_stocks/(double(patch_cnt)*Patch::AREA) << '\n';
 }
+
+
+inline bool Simulation::is_probability(double p)
+{ return p >= 0. && p <= 1.; }

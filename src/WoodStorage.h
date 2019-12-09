@@ -57,8 +57,8 @@ inline WoodStorage &WoodStorage::get()
 inline void WoodStorage::add(const WoodStorage::unit &wood)
 {
     if (wood.life_expectancy == 0)
-    { emissions += wood.biomass; }
-    else { storage.push_back(wood); }
+    { emissions += wood.biomass; return; }
+    storage.push_back(wood);
 }
 
 

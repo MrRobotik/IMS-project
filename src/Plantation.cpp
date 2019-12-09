@@ -3,7 +3,7 @@
 
 
 unsigned Plantation::ROTATION_TIME;
-size_t Plantation::REPLANT_PER_YEAR;
+unsigned Plantation::REPLANT_TIME;
 
 
 Plantation::Plantation(size_t size) :
@@ -51,11 +51,9 @@ void Plantation::nextstep()
             // Substract the litter.
             total_nep -= patch.get_litter(PlantationPatch::LITTER_RATIO);
 
-            // Clear.
+            // Clear the patch.
             patch.clear_biomass();
         }
-
-        int replant_time = std::round(double(size)/REPLANT_PER_YEAR);
-        age = 0 - replant_time;
+        age = 0 - REPLANT_TIME;
     }
 }
