@@ -18,13 +18,13 @@ Simulation::Simulation(double discrete_area,
       REPLANT_LIMIT(replant_limit_per_year)
 {
     if (discrete_area == 0.)
-        throw std::invalid_argument(nullptr);
+        throw std::invalid_argument("invalid discrete area");
 
     if (rotation_time == 0 || rotation_time > 25)
-        throw std::invalid_argument(nullptr);
+        throw std::invalid_argument("invalid rotation time");
 
     if (! is_probability(rainforest_wood_waste) || ! is_probability(palm_wood_waste))
-        throw std::invalid_argument(nullptr);
+        throw std::invalid_argument("invalid wood waste");
 
     // Base settings.
     Patch::AREA = discrete_area;
@@ -140,7 +140,7 @@ inline void Simulation::print_csvline()
         total_nep += pl.get_nep();
 
         for (auto patch : pl.get_patches()) {
-            c_stocks += patch.get_c_stocks();
+            c_stocks += patch.get_biomass();
         }
     }
 
@@ -171,7 +171,7 @@ inline void Simulation::print_stats()
         patch_cnt += pl.get_patches().size();
 
         for (auto patch : pl.get_patches()) {
-            c_stocks += patch.get_c_stocks();
+            c_stocks += patch.get_biomass();
         }
     }
 

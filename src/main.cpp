@@ -62,6 +62,11 @@ int main(int argc, char **argv)
 
     // Read params from the configuration file..
     std::fstream file(params, std::ios_base::in);
+    if (! file.is_open()) {
+        std::cerr << "couldn't open config-file" << std::endl;
+        return 1;
+    }
+
     file >> discrete_area;
     file >> deforest_per_year;
     file >> deforest_limit;
@@ -89,8 +94,8 @@ int main(int argc, char **argv)
         simulation.run(duration);
 
     }
-    catch (const std::invalid_argument &) {
-        std::cerr << "Invalid config-file" << std::endl;
+    catch (const std::invalid_argument &e) {
+        std::cerr << "config-file: " << e.what() << std::endl;
         return 1;
     }
 
